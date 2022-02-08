@@ -70,6 +70,8 @@ class Enemy {
     }
 }
 
+
+
 const x = canvas.width / 2
 const y = canvas.height / 2
 
@@ -124,7 +126,7 @@ function animate() {
             projectile.y - projectile.radius > canvas.height
         ) {
             setTimeout(() => {
-                projectile.splice(index, 1)
+                projectiles.splice(index, 1)
             }, 0)
         }
     })
@@ -143,8 +145,10 @@ function animate() {
             // Check if a projectile has touched the player
             const distProjectile = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y)
             if (distProjectile - enemy.radius - projectile.radius < -1) {
-                if (enemy.radius -10 > 10){
-                    enemy.radius -= 10
+                if (enemy.radius - 10 > 5) {
+                    gsap.to(enemy, {
+                        radius: enemy.radius - 10
+                    })
                     setTimeout(() => {
                         projectiles.splice(projectileI, 1)
                     }, 0)
