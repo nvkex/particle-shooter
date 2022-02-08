@@ -143,10 +143,18 @@ function animate() {
             // Check if a projectile has touched the player
             const distProjectile = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y)
             if (distProjectile - enemy.radius - projectile.radius < -1) {
-                setTimeout(() => {
-                    enemies.splice(enemyI, 1)
-                    projectiles.splice(projectileI, 1)
-                }, 0)
+                if (enemy.radius -10 > 10){
+                    enemy.radius -= 10
+                    setTimeout(() => {
+                        projectiles.splice(projectileI, 1)
+                    }, 0)
+                }
+                else {
+                    setTimeout(() => {
+                        enemies.splice(enemyI, 1)
+                        projectiles.splice(projectileI, 1)
+                    }, 0)
+                }
             }
         })
     })
