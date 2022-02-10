@@ -1,4 +1,5 @@
 const canvas = document.querySelector('canvas')
+const scoreEl = document.querySelector('#scoreEl')
 
 // Canvas context
 const c = canvas.getContext('2d')
@@ -138,6 +139,7 @@ function spawnEnemies() {
 
 
 let animationId
+let score = 0
 /**
  * Animates all the movements and actions on the canvas
  */
@@ -178,9 +180,12 @@ function animate() {
         }
 
         projectiles.forEach((projectile, projectileI) => {
-            // Check if a projectile has touched the player
+            // Check if a projectile has touched the enemy
             const distProjectile = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y)
             if (distProjectile - enemy.radius - projectile.radius < -1) {
+                // Update score
+                score += 100
+                scoreEl.innerHTML = score
 
                 // Create explosions
                 for (let i = 0; i < enemy.radius * 1.5; i++) {
