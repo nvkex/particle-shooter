@@ -1,5 +1,7 @@
 const canvas = document.querySelector('canvas')
-const scoreEl = document.querySelector('#scoreEl')
+const scoreEl1 = document.querySelector('#scoreEl1')
+const scoreEl2 = document.querySelector('#scoreEl2')
+const menuContainer = document.querySelector(".menu-container");
 
 // Canvas context
 const c = canvas.getContext('2d')
@@ -105,12 +107,23 @@ class Particle {
 const x = canvas.width / 2
 const y = canvas.height / 2
 
-const player = new Player(x, y, 10, 'white')
+let player = new Player(x, y, 10, 'white')
 player.draw()
 
-const projectiles = []
-const enemies = []
-const particles = []
+let projectiles = []
+let enemies = []
+let particles = []
+let score = 0
+
+function init() {
+    player = new Player(x, y, 10, 'white')
+    projectiles = []
+    enemies = []
+    particles = []
+    score = 0
+    scoreEl1.innerHTML = 0
+    scoreEl2.innerHTML = 0
+}
 
 function spawnEnemies() {
     setInterval(() => {
@@ -139,7 +152,6 @@ function spawnEnemies() {
 
 
 let animationId
-let score = 0
 /**
  * Animates all the movements and actions on the canvas
  */
@@ -177,6 +189,10 @@ function animate() {
         if (distPlayer - enemy.radius - player.radius < 0) {
             // End
             cancelAnimationFrame(animationId)
+            // Show score modal
+            menuContainer.style.display = "flex"
+            // Change button text to 'Restart'
+            menuContainer.childNodes[1].childNodes[5].innerHTML = "Restart"
         }
 
         projectiles.forEach((projectile, projectileI) => {
@@ -185,7 +201,8 @@ function animate() {
             if (distProjectile - enemy.radius - projectile.radius < -1) {
                 // Update score
                 score += 100
-                scoreEl.innerHTML = score
+                scoreEl1.innerHTML = score
+                scoreEl2.innerHTML = score
 
                 // Create explosions
                 for (let i = 0; i < enemy.radius * 1.5; i++) {
@@ -234,5 +251,10 @@ addEventListener('click', (e) => {
     ))
 })
 
-animate()
-spawnEnemies()
+function startGame() {
+    init()
+    animate()
+    spawnEnemies()
+    menuContainer.style.display = "none"
+}
+
